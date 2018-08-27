@@ -1,0 +1,22 @@
+<div class="wrap">
+  <div *ngFor="let collection of homeImageCollection">
+    <div class="collection-title">
+      <label class="label " for="">{{collection.category}}</label>
+    </div>
+    <mat-grid-list [cols]="cardPerRow">
+      <mat-grid-tile (click)=viewImage(collection.category,image) *ngFor="let image of collection.images">
+        <mat-card class="image-card">
+          <mat-card-content class="dashboard-card-content">
+            <img src="./assets/default-collection/{{collection.category}}/preview/{{image}}" alt="">
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>
+
+<img class="current-view-image" *ngIf=currentViewImage src="{{currentViewImage}}" alt="">
+
+<button (click)=closeImageView() *ngIf=currentViewImage class="close-image-view" mat-fab>
+  <mat-icon aria-label="Example icon-button with a heart icon">close</mat-icon>
+</button>
