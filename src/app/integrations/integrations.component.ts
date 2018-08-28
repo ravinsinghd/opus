@@ -24,4 +24,8 @@ export class IntegrationsComponent implements OnInit {
     this.googleAPIService.connect();
   }
 
+  getFiles() {
+    this.googleAPIService.getFiles().subscribe( result => console.log( result ) );
+  }
+
 }

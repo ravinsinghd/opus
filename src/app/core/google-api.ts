@@ -1,6 +1,6 @@
 declare const gapi: any;
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -37,4 +37,9 @@ export class GoogleAPIService {
     this.googleSignInStatus.next( gapi.auth2.getAuthInstance().isSignedIn.get() );
   }
 
+  getFiles() {
+    return new Observable( ( observer ) => {
+      gapi.client.drive.files.list( { 'fields': 'nextPageToken, files(id, name)' } ).then( result => observer.next( result ) );
+    } );
+  }
 }
