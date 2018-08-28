@@ -6,21 +6,23 @@ import { LayoutModule } from '@angular/cdk/layout';
 
 import { AppRoutingModule } from './app.routing.module';
 
+import { GoogleAPIService } from './core/google-api';
+
 import { AppComponent } from './app.component';
-import { TestComponent } from './test/test.component';
 import { HomeComponent } from './home/home.component';
+import { IntegrationsComponent } from './integrations/integrations.component';
 
 @NgModule( {
   declarations: [
     AppComponent,
-    TestComponent,
-    HomeComponent
+    HomeComponent,
+    IntegrationsComponent
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule, ...materialImports,
     LayoutModule, AppRoutingModule
   ],
-  providers: [],
+  providers: [ GoogleAPIService ],
   bootstrap: [ AppComponent ]
 } )
 export class AppModule { }

@@ -1,0 +1,10 @@
+<div class="wrap">
+  <div class="wrap-item">Connect to Google Drive</div>
+  <div class="wrap-item">
+    <img src="./assets/drive_icon.png" alt="">
+  </div>
+  <div class="wrap-item">
+    <button mat-raised-button *ngIf=!isSignedIn color="primary" (click)=connect()>Connect</button>
+    <button mat-raised-button *ngIf=isSignedIn color="primary" (click)=signOut()>SignOut</button>
+  </div>
+</div>
