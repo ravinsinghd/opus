@@ -9,7 +9,7 @@ export const defaultCollection = [ {
 }, {
   category: 'toy',
   images: [
-    'ladybug-fig-funny-lucky-ladybug.jpg'
+    'ladybug-fig-funny-lucky-ladybug.jpg',
     'mario-luigi-figures-funny-163114.jpeg',
     'pexels-photo.jpg',
     'pexels-photo-104344.jpeg',
