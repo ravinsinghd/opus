@@ -1,12 +1,13 @@
 declare const gapi: any;
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable()
 export class GoogleAPIService {
   googleSignInStatus = new Subject<any>();
   currentUser = new Subject<any>();
+  OPUSFolderPresented = new BehaviorSubject<boolean>( false );
   googleAPIServiceInstance = this;
   constructor() {
     gapi.load( 'client:auth2', () => this.connectDiscoveryAPI() );
@@ -71,15 +72,18 @@ export class GoogleAPIService {
     } );
   }
 
-  createFolder( folderName ) {
+  createFolder( folderName, parentID = null ) {
     const fileMetadata = {
       'name': folderName,
-      'mimeType': 'application/vnd.google-apps.folder'
+      'mimeType': 'application/vnd.google-apps.folder',
+      'parents': parentID ? [ parentID ] : null
     };
     return new Observable( ( observer ) => {
-      gapi.client.drive.files.create( { resource: fileMetadata, fields: 'id' } ).then( file => {
-        observer.next( file.id );
+      gapi.client.drive.files.create( { resource: fileMetadata, fields: 'id' } ).then( response => {
+        observer.next( response.result.id );
       } );
     } );
   }
+
+
 }

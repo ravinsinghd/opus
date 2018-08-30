@@ -4,7 +4,7 @@
     <mat-toolbar color="primary">OPUS</mat-toolbar>
     <div class="nav-header">
       <div>Images</div>
-      <div>
+      <div *ngIf=opusFolderAvailable>
         <button mat-icon-button>
           <i class="fa fa-plus" aria-hidden="true"></i>
         </button>
@@ -15,7 +15,7 @@
     </mat-nav-list>
     <div class="nav-header">
       <div>First and then</div>
-      <div>
+      <div *ngIf=opusFolderAvailable>
         <button mat-icon-button>
           <i class="fa fa-plus" aria-hidden="true"></i>
         </button>
@@ -25,7 +25,7 @@
     </mat-nav-list>
     <div class="nav-header">
       <div>Flow</div>
-      <div>
+      <div *ngIf=opusFolderAvailable>
         <button mat-icon-button>
           <i class="fa fa-plus" aria-hidden="true"></i>
         </button>
