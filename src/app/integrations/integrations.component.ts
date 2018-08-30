@@ -19,8 +19,13 @@ export class IntegrationsComponent implements OnInit {
   ngOnInit() {
     const status$ = this.googleAPIService.googleSignInStatus.pipe( tap( status => this.isSignedIn = status ) );
     const user$ = this.googleAPIService.currentUser.pipe( tap( user => {
-      this.currentUser.name = user.getBasicProfile().getName();
-      this.currentUser.email = user.getBasicProfile().getEmail();
+      const basicProfile = user.getBasicProfile();
+      if ( user && basicProfile ) {
+        this.currentUser.name = basicProfile.getName();
+        this.currentUser.email = basicProfile.getEmail();
+      } else {
+        this.currentUser = {};
+      }
     } ) );
     combineLatest( status$, user$ ).subscribe( () => this.changeDetectorRef.detectChanges() );
   }

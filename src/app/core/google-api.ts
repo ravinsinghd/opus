@@ -28,10 +28,12 @@ export class GoogleAPIService {
 
   signIn() {
     gapi.auth2.getAuthInstance().signIn();
+    this.updateProperties();
   }
 
   signOut() {
     gapi.auth2.getAuthInstance().signOut();
+    this.updateProperties();
   }
 
   updateProperties() {
@@ -59,5 +61,25 @@ export class GoogleAPIService {
 
   getCurrentUser() {
     return gapi.auth2.getAuthInstance().currentUser.get();
+  }
+
+  getOPUSFolder() {
+    return new Observable( ( observer ) => {
+      gapi.client.drive.files.list( { q: 'mimeType="application/vnd.google-apps.folder" and name = "OPUS"' } ).then( result => {
+        observer.next( result );
+      } );
+    } );
+  }
+
+  createFolder( folderName ) {
+    const fileMetadata = {
+      'name': folderName,
+      'mimeType': 'application/vnd.google-apps.folder'
+    };
+    return new Observable( ( observer ) => {
+      gapi.client.drive.files.create( { resource: fileMetadata, fields: 'id' } ).then( file => {
+        observer.next( file.id );
+      } );
+    } );
   }
 }
