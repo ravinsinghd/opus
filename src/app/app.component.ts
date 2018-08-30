@@ -13,6 +13,7 @@ export class AppComponent {
   isHandset$: Observable<boolean> = this.breakpointObserver.observe( Breakpoints.Handset ).pipe( map( result => result.matches ) );
   title = 'opus';
   opusFolderAvailable = false;
+  navigation = [];
   constructor( private breakpointObserver: BreakpointObserver,
     private googleAPIService: GoogleAPIService ) { }
 
@@ -36,6 +37,8 @@ export class AppComponent {
         this.createOPUSFolder();
       } else {
         this.googleAPIService.OPUSFolderPresented.next( true );
+        const opusFolder = files[ 0 ];
+        this.getFirstLevelNavigation( opusFolder.id );
       }
     } );
   }
@@ -53,5 +56,23 @@ export class AppComponent {
       alert( 'Without OPUS folder app will not work as expected' );
     }
 
+  }
+
+  getFirstLevelNavigation( folderID ) {
+    const allowedNavigation = [ 'Flow', 'Images', 'FirstAndThen' ];
+    this.googleAPIService.getFoldersFromFolder( folderID ).subscribe( ( response: any ) => {
+      const firstLevelNavigation = response.files.filter( file => allowedNavigation.indexOf( file.name ) !== -1 );
+      this.getSecondLevelNavigation( firstLevelNavigation );
+    } );
+  }
+
+  getSecondLevelNavigation( firstLevelNavigation ) {
+    const secondLevelRequest = firstLevelNavigation.map( navigation => this.googleAPIService.getFoldersFromFolder( navigation.id ) );
+    zip( ...secondLevelRequest ).subscribe( subFolders => {
+      this.navigation = subFolders.map( ( folders: any, i ) => {
+        firstLevelNavigation[ i ].secondLevelNavigation = folders.files;
+        return firstLevelNavigation[ i ];
+      } );
+    } );
   }
 }

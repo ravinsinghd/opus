@@ -85,5 +85,16 @@ export class GoogleAPIService {
     } );
   }
 
+  getFoldersFromFolder( folderID ) {
+    const fileMetadata = {
+      'q': `'${ folderID }' in parents and mimeType = 'application/vnd.google-apps.folder'`
+    };
+    return new Observable( ( observer ) => {
+      gapi.client.drive.files.list( fileMetadata ).then( response => {
+        observer.next( response.result );
+      } );
+    } );
+  }
+
 
 }
