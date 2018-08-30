@@ -12,6 +12,9 @@ const routes: Routes = [
   }, {
     path: 'integrations',
     component: IntegrationsComponent
+  }, {
+    path: 'Images/:id',
+    loadChildren: './images/images.module#ImagesModule'
   } ];
 
 

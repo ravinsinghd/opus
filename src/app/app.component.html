@@ -7,13 +7,13 @@
       <div class="nav-header">
         <div>{{nav.name}}</div>
         <div *ngIf=opusFolderAvailable>
-          <button mat-icon-button>
+          <!-- <button mat-icon-button>
             <i class="fa fa-plus" aria-hidden="true"></i>
-          </button>
+          </button> -->
         </div>
       </div>
       <mat-nav-list>
-        <a *ngFor="let secondNav of nav.secondLevelNavigation" mat-list-item href="home">{{secondNav.name}}</a>
+        <a *ngFor="let secondNav of nav.secondLevelNavigation" mat-list-item href="{{nav.name+'/'+secondNav.id}}">{{secondNav.name}}</a>
       </mat-nav-list>
     </div>
 

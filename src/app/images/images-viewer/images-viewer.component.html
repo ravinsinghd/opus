@@ -1,0 +1,9 @@
+<mat-grid-list cols=5>
+  <mat-grid-tile (click)=viewImage(collection.category,image) *ngFor="let image of images">
+    <mat-card class="image-card">
+      <mat-card-content class="dashboard-card-content">
+        <img src="{{image.thumbnailLink}}" alt="">
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

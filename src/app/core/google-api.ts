@@ -8,6 +8,7 @@ export class GoogleAPIService {
   googleSignInStatus = new Subject<any>();
   currentUser = new Subject<any>();
   OPUSFolderPresented = new BehaviorSubject<boolean>( false );
+  googleAPIReady = new BehaviorSubject<boolean>( false );
   googleAPIServiceInstance = this;
   constructor() {
     gapi.load( 'client:auth2', () => this.connectDiscoveryAPI() );
@@ -38,6 +39,7 @@ export class GoogleAPIService {
   }
 
   updateProperties() {
+    this.googleAPIReady.next( true );
     this.updateSignInStatus();
     this.updateCurrentUser();
   }
@@ -88,6 +90,18 @@ export class GoogleAPIService {
   getFoldersFromFolder( folderID ) {
     const fileMetadata = {
       'q': `'${ folderID }' in parents and mimeType = 'application/vnd.google-apps.folder'`
+    };
+    return new Observable( ( observer ) => {
+      gapi.client.drive.files.list( fileMetadata ).then( response => {
+        observer.next( response.result );
+      } );
+    } );
+  }
+
+  getImagesFromFolder( folderID ) {
+    const fileMetadata = {
+      'q': `'${ folderID }' in parents and mimeType='image/jpeg'`,
+      'fields': 'files(id, name,webContentLink,thumbnailLink)'
     };
     return new Observable( ( observer ) => {
       gapi.client.drive.files.list( fileMetadata ).then( response => {
