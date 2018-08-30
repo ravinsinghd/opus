@@ -2,18 +2,36 @@
   <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="'over'" [opened]="false">
     <mat-toolbar color="primary">OPUS</mat-toolbar>
-    <div class="nav-header">Images</div>
+    <div class="nav-header">
+      <div>Images</div>
+      <div>
+        <button mat-icon-button>
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
     <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
+      <a mat-list-item href="home">Home</a>
     </mat-nav-list>
-    <div class="nav-header">First and then</div>
+    <div class="nav-header">
+      <div>First and then</div>
+      <div>
+        <button mat-icon-button>
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
     <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
     </mat-nav-list>
-    <div class="nav-header">Flow</div>
+    <div class="nav-header">
+      <div>Flow</div>
+      <div>
+        <button mat-icon-button>
+          <i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
     <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
     </mat-nav-list>
     <div class="nav-header">Settings</div>
     <mat-nav-list>
@@ -23,7 +41,7 @@
   <mat-sidenav-content>
     <mat-toolbar class="toolbar" color="primary">
       <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        <i class="fa fa-bars" aria-hidden="true"></i>
       </button>
       <span>OPUS</span>
     </mat-toolbar>

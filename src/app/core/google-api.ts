@@ -6,15 +6,13 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class GoogleAPIService {
   googleSignInStatus = new Subject<any>();
+  currentUser = new Subject<any>();
   googleAPIServiceInstance = this;
-  constructor() { }
-
-  connect() {
-    gapi.load( 'client:auth2', () => this.signIn() );
+  constructor() {
+    gapi.load( 'client:auth2', () => this.connectDiscoveryAPI() );
   }
 
-  signIn() {
-
+  connectDiscoveryAPI() {
     const DISCOVERY_DOCS = [ 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest' ];
     const config = {
       apiKey: environment.DRIVE_API_KEY,
@@ -23,23 +21,43 @@ export class GoogleAPIService {
       scope: environment.DRIVE_SCOPE
     };
     gapi.client.init( config ).then( () => {
-      gapi.auth2.getAuthInstance().signIn();
-      this.signInStatus();
+      console.log( 'Discovery API loaded' );
+      this.updateProperties();
     } );
+  }
+
+  signIn() {
+    gapi.auth2.getAuthInstance().signIn();
   }
 
   signOut() {
     gapi.auth2.getAuthInstance().signOut();
   }
 
-  signInStatus() {
-    gapi.auth2.getAuthInstance().isSignedIn.listen( ( status ) => this.googleSignInStatus.next( status ) );
-    this.googleSignInStatus.next( gapi.auth2.getAuthInstance().isSignedIn.get() );
+  updateProperties() {
+    this.updateSignInStatus();
+    this.updateCurrentUser();
+  }
+
+  updateSignInStatus() {
+    this.googleSignInStatus.next( this.getSignedStatus() );
+  }
+
+  updateCurrentUser() {
+    this.currentUser.next( this.getCurrentUser() );
   }
 
   getFiles() {
     return new Observable( ( observer ) => {
       gapi.client.drive.files.list( { 'fields': 'nextPageToken, files(id, name)' } ).then( result => observer.next( result ) );
     } );
+  }
+
+  getSignedStatus() {
+    return gapi.auth2.getAuthInstance().isSignedIn.get();
+  }
+
+  getCurrentUser() {
+    return gapi.auth2.getAuthInstance().currentUser.get();
   }
 }

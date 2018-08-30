@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { GoogleAPIService } from '../core/google-api';
+import { combineLatest } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component( {
   selector: 'app-integrations',
@@ -8,11 +10,19 @@ import { GoogleAPIService } from '../core/google-api';
 } )
 export class IntegrationsComponent implements OnInit {
 
-  isSignedIn = false;
-  constructor( private googleAPIService: GoogleAPIService ) { }
+  isSignedIn;
+  currentUser: any = {};
+  constructor( private googleAPIService: GoogleAPIService,
+    private changeDetectorRef: ChangeDetectorRef ) {
+  }
 
   ngOnInit() {
-    this.googleAPIService.googleSignInStatus.subscribe( status => this.isSignedIn = status );
+    const status$ = this.googleAPIService.googleSignInStatus.pipe( tap( status => this.isSignedIn = status ) );
+    const user$ = this.googleAPIService.currentUser.pipe( tap( user => {
+      this.currentUser.name = user.getBasicProfile().getName();
+      this.currentUser.email = user.getBasicProfile().getEmail();
+    } ) );
+    combineLatest( status$, user$ ).subscribe( () => this.changeDetectorRef.detectChanges() );
   }
 
   signOut() {
@@ -21,7 +31,7 @@ export class IntegrationsComponent implements OnInit {
 
 
   connect() {
-    this.googleAPIService.connect();
+    this.googleAPIService.signIn();
   }
 
   getFiles() {

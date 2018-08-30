@@ -7,6 +7,8 @@
     <button mat-raised-button *ngIf=!isSignedIn color="primary" (click)=connect()>Connect</button>
     <button mat-raised-button *ngIf=isSignedIn color="primary" (click)=signOut()>SignOut</button>
   </div>
+  <div class="wrap-item">
+    <div> {{currentUser.name}}</div>
+    <div>{{currentUser.email}}</div>
+  </div>
 </div>
-
-<button mat-raised-button *ngIf=isSignedIn color="primary" (click)=getFiles()>getFiles</button>
