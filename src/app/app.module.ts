@@ -7,6 +7,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { AppRoutingModule } from './app.routing.module';
 
 import { GoogleAPIService } from './core/google-api';
+import { SideNavService } from './side-nav.service';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -22,7 +23,7 @@ import { IntegrationsComponent } from './integrations/integrations.component';
     BrowserModule, BrowserAnimationsModule, ...materialImports,
     LayoutModule, AppRoutingModule
   ],
-  providers: [ GoogleAPIService ],
+  providers: [ GoogleAPIService, SideNavService ],
   bootstrap: [ AppComponent ]
 } )
 export class AppModule { }
